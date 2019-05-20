@@ -7,8 +7,6 @@ package task_1_FirstApp;
  * @version 1.1
  */
 public class Main {
-
-    
     private static final String NAME = "Sergey";
 
     /**
