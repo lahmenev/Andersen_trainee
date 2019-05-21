@@ -11,7 +11,7 @@ public class Main {
 
     /**
      * Here start point of the program
-     * This method displays  text in console
+     * This method displays  text  in console
      * @param args command line   values
      */
     public static void main(String[] args) {
