@@ -47,9 +47,8 @@ public class QueueTest {
      */
     @Test(expected = NullPointerException.class)
     public void testAddNullElem() {
-        String color = null;
         MyQueue<String> queue = new MyQueue<>(5);
-        queue.add(color);
+        queue.add(null);
     }
 
     /**

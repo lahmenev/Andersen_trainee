@@ -17,13 +17,15 @@ public class MyQueue<T> {
     /**
      * Creates a queue with the given capacity
      *
-     * @param capacity
+     * @param capacity capacity of the specified queue
      * @throws IllegalArgumentException if {@code capacity < 1}
      */
     public MyQueue(int capacity) {
+
         if (capacity <= 0) {
             throw new IllegalArgumentException("Capacity should be greater than 0");
         }
+
         this.capacity = capacity;
         queue = (T[]) new Object[capacity];
     }
@@ -36,14 +38,17 @@ public class MyQueue<T> {
      * @throws ArrayIndexOutOfBoundsException if this queue is full
      */
     public void add(T data) throws NullPointerException, ArrayIndexOutOfBoundsException {
+
         if (data == null) {
             throw new NullPointerException();
         }
+
         if (isFull()) {
             throw new ArrayIndexOutOfBoundsException("Current queue is full");
         }
+
         queue[putIndex] = data;
-        putIndex = (putIndex + 1)%capacity;
+        putIndex = (putIndex + 1) % capacity;
         count++;
     }
 
@@ -53,11 +58,13 @@ public class MyQueue<T> {
      * @throws IllegalStateException if the specified array is null
      */
     public void remove() throws IllegalStateException{
+
         if (isEmpty()) {
             throw new IllegalStateException("There are no elements in the queue");
         }
+
         queue[takeIndex] = null;
-        takeIndex = (takeIndex + 1)%capacity;
+        takeIndex = (takeIndex + 1) % capacity;
         count--;
     }
 
@@ -68,9 +75,11 @@ public class MyQueue<T> {
      * @throws IllegalStateException if the specified array is null
      */
     public T get() throws IllegalStateException {
+
         if (isEmpty()) {
             throw new IllegalStateException("There are no elements in the queue");
         }
+
         return queue[takeIndex];
     }
 
@@ -94,7 +103,7 @@ public class MyQueue<T> {
     public void printQueue() {
         System.out.print("Elements : ");
         for (int i = 0; i < capacity; i++) {
-            System.out.print(queue[(takeIndex + i)%5] + " ");
+            System.out.print(queue[(takeIndex + i) % 5] + " ");
         }
     }
 
