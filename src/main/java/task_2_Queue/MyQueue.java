@@ -98,6 +98,11 @@ public class MyQueue<T> {
         }
     }
 
+    /**
+     * The current count of queue
+     *
+     * {@link MyQueue#count}
+     */
     public int getCount() {
         return count;
     }
