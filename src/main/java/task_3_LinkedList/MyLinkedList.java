@@ -55,7 +55,6 @@ public class MyLinkedList<T> {
             nextNode.prev = newNode;
 
             if (index == 0) {
-
                 first = newNode;
             } else {
                 prevNode.next = newNode;
@@ -126,11 +125,12 @@ public class MyLinkedList<T> {
      * @throws IndexOutOfBoundsException if there is no such element in the list
      */
     public void remove(Object o) throws NoSuchElementException, IndexOutOfBoundsException {
-        Node<T> delNode = findNodeByObj(o);
 
         if (isEmpty()) {
             throw new NoSuchElementException("List is empty");
         }
+
+        Node<T> delNode = findNodeByObj(o);
 
         if (delNode == null) {
             throw new IndexOutOfBoundsException("There is no such element");
