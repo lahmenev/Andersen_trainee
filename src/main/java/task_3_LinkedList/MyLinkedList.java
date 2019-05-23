@@ -10,9 +10,9 @@ import java.util.NoSuchElementException;
  */
 public class MyLinkedList<T> {
 
-    private int size;
     private Node<T> first;
     private Node<T> last;
+    private int size;
 
     /**
      * Appends the specified element to the end of this list
