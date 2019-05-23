@@ -17,7 +17,7 @@ public interface MyList<T> {
     T peek();
 
     /**
-     * Pushes an item onto the top of this stack
+     * Push an item onto the top of this stack
      *
      * @param obj the item to be pushed onto this stack
      * @throws NullPointerException if the specified element is null
