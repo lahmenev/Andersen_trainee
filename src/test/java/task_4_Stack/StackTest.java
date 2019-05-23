@@ -12,29 +12,22 @@ import static org.junit.Assert.*;
 public class StackTest {
 
     /**
-     * Put one String element to specified stack and check amount of elements
+     * Put String and Integer elements to each stack and check amount of elements
      */
     @Test
-    public void testAddString() {
-        MyStack<String> stack = new MyStack<>(4);
-        stack.push("red");
-        stack.push("green");
-        stack.push("blue");
+    public void testAdd() {
+        MyStack<String> stackStr = new MyStack<>(4);
+        stackStr.push("red");
+        stackStr.push("green");
+        stackStr.push("blue");
 
-        assertEquals(3, stack.size());
-    }
+        MyStack<Integer> stackInt = new MyStack<>(4);
+        stackInt.push(1);
+        stackInt.push(2);
+        stackInt.push(3);
 
-    /**
-     * Put one Integer element to specified stack and check amount of elements
-     */
-    @Test
-    public void testAddInteger() {
-        MyStack<Integer> stack = new MyStack<>(3);
-        stack.push(1);
-        stack.push(4);
-        stack.push(6);
-
-        assertEquals(3, stack.size());
+        assertEquals(3, stackStr.size());
+        assertEquals(3, stackInt.size());
     }
 
     /**
