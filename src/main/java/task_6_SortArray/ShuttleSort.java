@@ -19,7 +19,7 @@ public class ShuttleSort {
     }
 
     /**
-     * Sorts input array
+     * Sort input array
      *
      * @param array input array to sort
      */
