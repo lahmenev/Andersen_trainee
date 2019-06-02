@@ -36,44 +36,53 @@ public class ServerService extends Thread {
     @Override
     public void run() {
         String clientString;
+
         try {
             clientString = in.readLine();
-            out.println("Добро пожаловать, " + clientString);
+            out.println("You are welcome, " + clientString);
+
             try {
+
                 while (true) {
                     clientString = in.readLine();
 
-                    if(clientString.equals("stop")) {
+                    if(clientString.equalsIgnoreCase("stop")) {
                         this.stopService();
                         break;
                     }
 
                     if (clientString.contains("погода")) {
-                        out.println("Сегодня ясная погода");
-                    } else if (clientString.contains("дата")) {
+                        out.println("It is sun today");
+                    } else if (clientString.contains("date")) {
                         Date date = new Date();
                         out.println(date.toString());
-                    } else if (clientString.contains("поесть") || clientString.contains("пообедать")) {
-                        out.println("На Невском проспекте 65 есть хорошее место");
+                    } else if (clientString.contains("eat") || clientString.contains("drink")) {
+                        out.println("There is good place on Nevsky 36");
                     } else {
-                        out.println("К сожалению, я не могу ответить на этот вопрос");
+                        out.println("Sorry, I can't answer to this question");
                     }
 
-                    System.out.println("Сообщения от клиента : " + clientString);
+                    System.out.println("Messages from client : " + clientString);
                 }
+
             } catch (NullPointerException n) {
                 n.printStackTrace();
             }
 
         } catch (IOException e) {
-            this.stopService();
+
+            try {
+                this.stopService();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
     /**
      * Terminates server
      */
-    private void stopService() {
+    private void stopService() throws IOException{
         try {
 
             if (!clientSocket.isClosed()) {
@@ -85,6 +94,10 @@ public class ServerService extends Thread {
 
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            in.close();
+            out.close();
+            Server.server.close();
         }
     }
 }

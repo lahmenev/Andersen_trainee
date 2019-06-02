@@ -20,6 +20,7 @@ public class ClientService {
     private BufferedReader reader;
     private int port;
     private String host;
+    private static final String EXIT = "stop";
 
     /**
      * Initialization of client
@@ -33,7 +34,7 @@ public class ClientService {
 
         try {
             this.clientSocket = new Socket(host, port);
-            System.out.println("Успешное подключение к серверу");
+            System.out.println("Connection to server is successful");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,20 +44,25 @@ public class ClientService {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            System.out.println("Пожалуйста, введите ваше имя");
+            System.out.println("Please, enter your name");
             out.println(reader.readLine());
             new ReadMsg().start();
             new WriteMsg().start();
 
         } catch (IOException e) {
-            ClientService.this.stopService();
+            try {
+                ClientService.this.stopService();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
     /**
      * Stops connection with server
      */
-    private void stopService() {
+    private void stopService() throws IOException{
+
         try {
 
             if (!clientSocket.isClosed()) {
@@ -68,13 +74,19 @@ public class ClientService {
 
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            in.close();
+            out.close();
+            reader.close();
         }
     }
 
     /**
-     * Class for getting message from server. It run in another thread
+     * Class for getting message from server.
+     * It runs in another thread.
      */
     private class ReadMsg extends Thread {
+
         /**
          * Runs main logic for thread
          */
@@ -82,10 +94,11 @@ public class ClientService {
         public void run() {
             String servString;
             try {
+
                 while (true) {
                     servString = in.readLine();
 
-                    if (servString.equals("stop")) {
+                    if (servString.equalsIgnoreCase(EXIT)) {
                         ClientService.this.stopService();
                         break;
                     }
@@ -94,15 +107,21 @@ public class ClientService {
                 }
 
             } catch (IOException e) {
-                ClientService.this.stopService();
+                try {
+                    ClientService.this.stopService();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
 
     /**
-     * Class for sending message to server. It run in another thread
+     * Class for sending message to server.
+     * It run in another thread
      */
     public class WriteMsg extends Thread {
+
         /**
          * Runs main logic for thread
          */
@@ -111,10 +130,11 @@ public class ClientService {
 
             while (true) {
                 String userString;
+
                 try {
                     userString = reader.readLine();
 
-                    if (userString.equals("stop")) {
+                    if (userString.equalsIgnoreCase(EXIT)) {
                         out.println("stop");
                         ClientService.this.stopService();
                         break;
@@ -123,7 +143,11 @@ public class ClientService {
                     }
 
                 } catch (IOException e) {
-                    ClientService.this.stopService();
+                    try {
+                        ClientService.this.stopService();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         }

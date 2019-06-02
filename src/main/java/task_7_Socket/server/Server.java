@@ -21,12 +21,12 @@ public class Server {
      */
     public static void main(String[] args) throws IOException {
         server = new ServerSocket(PORT);
-        System.out.println("Сервер запущен");
+        System.out.println("Server has started");
         try {
 
             while (true) {
                 Socket clientSocket = server.accept();
-                System.out.println("Клиент присоединился");
+                System.out.println("Client has connected to server");
                 try {
                     new ServerService(clientSocket);
                 } catch (IOException e) {

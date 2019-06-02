@@ -23,14 +23,10 @@ public class ThreadWithMap {
         Thread thread = null;
 
         for (int i = 0; i < 10; i++) {
-            thread = new Thread() {
-
-                @Override
-                public void run() {
-                    doWork();
-                    map.put(Thread.currentThread().getName(), new Resource(valBefore, Thread.currentThread().getName(), result));
-                }
-            };
+            thread = new Thread(() -> {
+                doWork();
+                map.put(Thread.currentThread().getName(), new Resource(valBefore, Thread.currentThread().getName(), result));
+            });
 
             thread.start();
 

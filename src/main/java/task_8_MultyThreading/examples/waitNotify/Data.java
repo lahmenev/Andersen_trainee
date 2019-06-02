@@ -28,7 +28,7 @@ public class Data {
             }
         }
 
-        transfer = false;
+        this.transfer = false;
         this.packet = packet;
         notifyAll();
     }
