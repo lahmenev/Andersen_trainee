@@ -19,9 +19,6 @@ public class Receiver implements Runnable {
 
     public void run() {
 
-//        for(String receivedMessage = load.receive();
-//            !"End".equals(receivedMessage);
-//            receivedMessage = load.receive()) {
         while (true) {
             String receivedMessage = load.receive();
 

@@ -20,21 +20,21 @@ public class Server {
      * @param args parameter for method
      */
     public static void main(String[] args) throws IOException {
+        Socket clientSocket = null;
         server = new ServerSocket(PORT);
         System.out.println("Server has started");
-        try {
 
-            while (true) {
-                Socket clientSocket = server.accept();
+        while (true) {
+
+            try {
+                clientSocket = server.accept();
                 System.out.println("Client has connected to server");
-                try {
-                    new ServerService(clientSocket);
-                } catch (IOException e) {
-                    clientSocket.close();
-                }
+                new ServerService(clientSocket);
+            } catch (IOException e) {
+                clientSocket.close();
+            } finally {
+                server.close();
             }
-        } finally {
-            server.close();
         }
     }
 }

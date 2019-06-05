@@ -4,6 +4,8 @@ import task_8_MultyThreading.resource.Counter;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static java.lang.String.format;
 
 /**
@@ -16,7 +18,8 @@ import static java.lang.String.format;
  */
 public class CallableImpl {
     private static Counter counter = new Counter();
-    private static volatile int result, valBefore;
+    private static AtomicInteger result = new AtomicInteger(0);
+    private static AtomicInteger valBefore = new AtomicInteger(0);
 
     public static void main(String[] args) {
         FutureTask<Integer> future = null;
@@ -31,7 +34,7 @@ public class CallableImpl {
                     e.printStackTrace();
                 }
 
-                return result;
+                return result.get();
             };
 
             future = new FutureTask<>(task);
@@ -40,13 +43,8 @@ public class CallableImpl {
 
             try {
                 thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            try {
                 System.out.println(format(thread.getName() +
-                        ": valBefore = %d, result = %d", valBefore, future.get()));
+                        ": valBefore = %d, result = %d", valBefore.get(), future.get()));
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
@@ -66,7 +64,7 @@ public class CallableImpl {
         valBefore = result;
 
         for (int i = 0; i < 10; i++) {
-            result += counter.count(i);
+            result.addAndGet(counter.count(i));
         }
     }
 }

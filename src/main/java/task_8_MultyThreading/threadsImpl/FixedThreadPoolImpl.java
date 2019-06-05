@@ -3,6 +3,8 @@ package task_8_MultyThreading.threadsImpl;
 import task_8_MultyThreading.resource.Counter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import static java.lang.String.format;
 
 /**
@@ -22,7 +24,7 @@ public class FixedThreadPoolImpl {
         ExecutorService threadPool = Executors.newFixedThreadPool(2);
 
         for (int i = 0; i < 10; i++) {
-            threadPool.submit(() -> {
+            threadPool.execute(() -> {
                 doWork();
 
                 try {
@@ -38,8 +40,10 @@ public class FixedThreadPoolImpl {
 
         threadPool.shutdown();
 
-        while (!threadPool.isTerminated()) {
-
+        try {
+            threadPool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         System.out.println("Final result = " + result);

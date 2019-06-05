@@ -32,29 +32,19 @@ public class ClientService {
         this.host = host;
         this.port = port;
 
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)){
+
             this.clientSocket = new Socket(host, port);
             System.out.println("Connection to server is successful");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            reader = new BufferedReader(new InputStreamReader(System.in));
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
 
             System.out.println("Please, enter your name");
             out.println(reader.readLine());
             new ReadMsg().start();
             new WriteMsg().start();
-
         } catch (IOException e) {
-            try {
-                ClientService.this.stopService();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            e.printStackTrace();
         }
     }
 
@@ -92,11 +82,11 @@ public class ClientService {
          */
         @Override
         public void run() {
-            String servString;
-            try {
 
-                while (true) {
-                    servString = in.readLine();
+            while (true) {
+
+                try {
+                    String servString = in.readLine();
 
                     if (servString.equalsIgnoreCase(EXIT)) {
                         ClientService.this.stopService();
@@ -104,13 +94,13 @@ public class ClientService {
                     }
 
                     System.out.println(servString);
-                }
+                } catch (IOException e) {
 
-            } catch (IOException e) {
-                try {
-                    ClientService.this.stopService();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                    try {
+                        ClientService.this.stopService();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         }
@@ -129,10 +119,9 @@ public class ClientService {
         public void run() {
 
             while (true) {
-                String userString;
 
                 try {
-                    userString = reader.readLine();
+                    String userString = reader.readLine();
 
                     if (userString.equalsIgnoreCase(EXIT)) {
                         out.println("stop");
@@ -143,6 +132,7 @@ public class ClientService {
                     }
 
                 } catch (IOException e) {
+
                     try {
                         ClientService.this.stopService();
                     } catch (IOException ex) {
